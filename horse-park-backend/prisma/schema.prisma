@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Horse {
+  id          Int          @id @default(autoincrement())
+  name        String       @db.VarChar(255)
+  breed       String?      @db.VarChar(255)
+  coatColor   String       @map("coat_color") @db.VarChar(255)
+  birthDate   DateTime?    @map("birth_date") @db.Date
+  description String?
+  horsePhotos HorsePhoto[]
+
+  @@map("horses")
+}
+
+model HorsePhoto {
+  id        Int      @id @default(autoincrement())
+  horseId   Int      @map("horse_id")
+  url       String   @db.VarChar(255)
+  isMain    Boolean  @default(false) @map("is_main")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  horse Horse @relation(fields: [horseId], references: [id], onDelete: Cascade)
+
+  @@map("horse_photos")
+}
