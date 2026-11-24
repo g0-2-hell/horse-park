@@ -7,9 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum HorseGender {
+  STALLION
+  GELDING
+  MARE
+}
+
 model Horse {
   id          Int          @id @default(autoincrement())
   name        String       @db.VarChar(255)
+  gender      HorseGender
   breed       String?      @db.VarChar(255)
   coatColor   String       @map("coat_color") @db.VarChar(255)
   birthDate   DateTime?    @map("birth_date") @db.Date
