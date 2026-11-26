@@ -22,7 +22,7 @@ export class HorsesController {
   }
 
   @Post()
-  createHorse(@Body() dto: CreateHorseDto) {
+  create(@Body() dto: CreateHorseDto) {
     return this.horsesService.create(dto);
   }
 
