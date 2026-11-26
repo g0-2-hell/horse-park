@@ -37,3 +37,49 @@ model HorsePhoto {
 
   @@map("horse_photos")
 }
+
+model Service {
+  id              Int            @id @default(autoincrement())
+  title           String         @db.VarChar(255)
+  price           Int?
+  durationMinutes Int?           @map("duration_minutes")
+  description     String?
+  servicePhotos   ServicePhoto[]
+
+  @@map("services")
+}
+
+model ServicePhoto {
+  id        Int      @id @default(autoincrement())
+  serviceId Int      @map("service_id")
+  url       String   @db.VarChar(255)
+  isMain    Boolean  @default(false) @map("is_main")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@map("services_photos")
+}
+
+model News {
+  id          Int         @id @default(autoincrement())
+  title       String      @db.VarChar(255)
+  createdAt   DateTime    @default(now()) @map("created_at")
+  isPublished Boolean     @default(false) @map("is_published")
+  description String?
+  newsPhotos  NewsPhoto[]
+
+  @@map("news")
+}
+
+model NewsPhoto {
+  id        Int      @id @default(autoincrement())
+  newsId    Int      @map("news_id")
+  url       String   @db.VarChar(255)
+  isMain    Boolean  @default(false) @map("is_main")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  news News @relation(fields: [newsId], references: [id], onDelete: Cascade)
+
+  @@map("news_photos")
+}
